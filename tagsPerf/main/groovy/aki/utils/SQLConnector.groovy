@@ -9,6 +9,10 @@ class SQLConnector {
     def masterUrl = "jdbc:mysql://localhost:3306/post_master_dev"
     def masterUser = "post"
     def masterPass = "post"
+    
+    def replicaUrl = "jdbc:mysql://localhost:3306/post_master_dev"
+    def replicaUser = "post"
+    def replicaPass = "post"
 
     def statsUrl = "jdbc:mysql://localhost:3306/post_stat_dev"
     def statsUser = "post"
@@ -17,6 +21,11 @@ class SQLConnector {
     Sql createMaster() {
         def final ADDRESS = masterUrl + "?allowMultiQueries=true"
         Sql.newInstance(ADDRESS, masterUser, masterPass, 'com.mysql.jdbc.Driver')
+    }
+
+    Sql createReplica() {
+        def final ADDRESS = replicaUrl + "?allowMultiQueries=true"
+        Sql.newInstance(ADDRESS, replicaUser, replicaPass, 'com.mysql.jdbc.Driver')
     }
 
     Sql createStats() {

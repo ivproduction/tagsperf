@@ -12,9 +12,11 @@ WHERE
   */
 
 SELECT SUM(AGGR.CLICKS) AS CLICKS
-FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
-                                                 AND
-                                                 AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11' RIGHT JOIN temp_tags as tags ON tags.TAG_NAME LIKE '%nokia%' AND tags.SHORTENED_LINK_ID=AGGR.UGUID
+FROM
+  UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                   AND
+                                                 AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'
+  RIGHT JOIN temp_tags as tags ON tags.TAG_NAME LIKE '%nokia%' AND tags.SHORTENED_LINK_ID=AGGR.UGUID
 WHERE
   U.ACCOUNT_ID = 2
   AND U.CAMPAIGN_ARCHIVED = 0
