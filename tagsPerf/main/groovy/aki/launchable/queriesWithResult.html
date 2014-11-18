@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+<p>
+
+<div>
+    1.1 Select count.
+</div>
+
+<div>
+    <span>EXPLAIN SELECT SUM(AGGR.CLICKS) AS CLICKS
+    FROM
+    UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+    AND
+    AGGR.DATE BETWEEN '2011-10-13' AND '2014-11-11'
+    JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+    JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+    WHERE
+    U.ACCOUNT_ID = 1
+    AND U.CAMPAIGN_ARCHIVED = 0
+    AND U.LINK_ARCHIVED = 0
+    AND t.TAG_NAME = 'naval';
+</span>
+</div>
+<br>
+
+<div>
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>c</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>FK_LINK_TAGS_TO_TAGS</td>
+            <td>8</td>
+            <td>const</td>
+            <td>7</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_stat_dev.AGGR.UGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+</div>
+</p>
+
+<p>
+
+<div>
+    1.2 Select count with ACCOUNT_ID filtering.
+</div>
+
+<div>
+    <span>EXPLAIN SELECT SUM(AGGR.CLICKS) AS CLICKS
+        FROM
+          UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                      AND
+                                                      AGGR.DATE BETWEEN '2011-10-13' AND '2014-11-11'
+          JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+          JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+        WHERE
+          lt.ACCOUNT_ID = 1
+          AND U.ACCOUNT_ID = 1
+          AND U.CAMPAIGN_ARCHIVED = 0
+          AND U.LINK_ARCHIVED = 0
+          AND t.TAG_NAME = 'naval';
+</span>
+</div>
+<br>
+
+<div>
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>c</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>PRIMARY</td>
+            <td>12</td>
+            <td>const,const</td>
+            <td>2</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+</div>
+</p>
+
+
+<p>
+
+<div>
+    2.1 Stats table
+</div>
+
+<div>
+    <span>
+        EXPLAIN SELECT
+  AGGR.DATE        AS DATE,
+  SUM(AGGR.CLICKS) AS CLICKS
+FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                 AND
+                                                 AGGR.DATE BETWEEN '2011-10-13' AND '2014-11-11'
+  JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+  JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+WHERE
+  U.ACCOUNT_ID = 1
+  AND U.CAMPAIGN_ARCHIVED = 0
+  AND U.LINK_ARCHIVED = 0
+  AND t.TAG_NAME = 'naval'
+GROUP BY AGGR.DATE
+HAVING
+  CLICKS != 0
+ORDER BY DATE ASC;
+</span>
+</div>
+<br>
+
+<div>
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index; Using temporary; Using filesort</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>c</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>FK_LINK_TAGS_TO_TAGS</td>
+            <td>8</td>
+            <td>const</td>
+            <td>7</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_stat_dev.AGGR.UGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+</div>
+</p>
+
+
+<p>
+
+<div>
+    2.2 Stats table aacount_id
+</div>
+
+<div>
+    <span>
+
+EXPLAIN SELECT
+          AGGR.DATE        AS DATE,
+          SUM(AGGR.CLICKS) AS CLICKS
+        FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                         AND
+                                                         AGGR.DATE BETWEEN '2011-10-13' AND '2014-11-11'
+          JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+          JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+        WHERE
+          lt.ACCOUNT_ID = 1
+          AND U.ACCOUNT_ID = 1
+          AND U.CAMPAIGN_ARCHIVED = 0
+          AND U.LINK_ARCHIVED = 0
+          AND t.TAG_NAME = 'naval'
+        GROUP BY AGGR.DATE
+        HAVING
+          CLICKS != 0
+        ORDER BY DATE ASC;
+</span>
+</div>
+<br>
+
+<div>
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index; Using temporary; Using filesort</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>c</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>PRIMARY</td>
+            <td>12</td>
+            <td>const,const</td>
+            <td>2</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+</div>
+</p>
+
+
+<p>
+
+<div>
+    3 Count for link list
+</div>
+
+<div>
+    <span>
+
+
+EXPLAIN SELECT COUNT(0) AS COUNT
+FROM (
+       SELECT U.UGUID
+       FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                        AND
+                                                        AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'
+         JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+         JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+       WHERE
+         U.ACCOUNT_ID = 2
+         AND U.CAMPAIGN_ARCHIVED = 0
+         AND U.LINK_ARCHIVED = 0
+         AND (U.ORIGINAL_URL LIKE '%%')
+         AND t.TAG_NAME = 'nacelle'
+       GROUP BY U.UGUID
+     ) AS T;
+
+
+
+
+</span>
+</div>
+<br>
+
+<div>
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>PRIMARY</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>Select tables optimized away</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td></td>
+            <td>1</td>
+            <td>Using index; Using temporary; Using filesort</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td></td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>FK_LINK_TAGS_TO_TAGS</td>
+            <td>8</td>
+            <td>const</td>
+            <td>7</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where; Using index</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_stat_dev.AGGR.UGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>c</td>
+            <td>eq_ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>post_master_dev.s.CAMPAIGN_ID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+</div>
+</p>
+
+
+<p>
+
+<div>
+    3.2
+</div>
+
+<div>
+    <span>
+
+EXPLAIN SELECT COUNT(0) AS COUNT
+FROM (
+       SELECT U.UGUID
+       FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                        AND
+                                                        AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'
+         JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+         JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+       WHERE
+         lt.ACCOUNT_ID = 2
+         AND U.ACCOUNT_ID = 2
+         AND U.CAMPAIGN_ARCHIVED = 0
+         AND U.LINK_ARCHIVED = 0
+         AND (U.ORIGINAL_URL LIKE '%%')
+         AND t.TAG_NAME = 'nacelle'
+       GROUP BY U.UGUID
+     ) AS T;
+
+</span>
+</div>
+<br>
+
+<div>
+
+
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>PRIMARY</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>NULL</td>
+            <td>Select tables optimized away</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td></td>
+            <td>1</td>
+            <td>Using index; Using temporary; Using filesort</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td></td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>PRIMARY</td>
+            <td>12</td>
+            <td>const</td>
+            <td>5</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where; Using index</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>DERIVED</td>
+            <td>c</td>
+            <td>eq_ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>post_master_dev.s.CAMPAIGN_ID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+
+
+</div>
+</p>
+
+
+<p>
+
+<div>
+    4 Links per page
+</div>
+
+<div>
+    <span>
+        EXPLAIN SELECT
+  U.TYPE           AS TYPE,
+  U.GEO_LINKS      AS GEO_LINKS,
+  U.CAMPAIGN_NAME  AS CAMPAIGN_NAME,
+  U.UGUID          AS UGUID,
+  U.HASH           AS HASH,
+  U.ALIAS          AS ALIAS,
+  U.ORIGINAL_URL   AS ORIGINAL_URL,
+  U.CUSTOM_DOMAIN  AS CUSTOM_DOMAIN,
+  U.CAMPAIGN_ID    AS CAMPAIGN_ID,
+  U.CREATION_DATE  AS CREATION_DATE,
+  SUM(AGGR.CLICKS) AS CLICKS
+FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                 AND
+                                                 AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'
+  JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+  JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+WHERE
+  U.ACCOUNT_ID = 2
+  AND U.CAMPAIGN_ARCHIVED = 0
+  AND U.LINK_ARCHIVED = 0
+  AND (U.ORIGINAL_URL LIKE '%%')
+  AND t.TAG_NAME = 'nacelle'
+GROUP BY U.UGUID
+ORDER BY CREATION_DATE DESC, ORDER_INSERTED DESC
+LIMIT 0, 20;
+</span>
+</div>
+<br>
+
+<div>
+
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index; Using temporary; Using filesort</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>FK_LINK_TAGS_TO_TAGS</td>
+            <td>8</td>
+            <td>const</td>
+            <td>7</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_stat_dev.AGGR.UGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>c</td>
+            <td>eq_ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>post_master_dev.s.CAMPAIGN_ID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+
+</div>
+</p>
+
+
+<p>
+
+<div>
+    4.2
+</div>
+
+<div>
+    <span>
+        EXPLAIN SELECT
+  U.TYPE           AS TYPE,
+  U.GEO_LINKS      AS GEO_LINKS,
+  U.CAMPAIGN_NAME  AS CAMPAIGN_NAME,
+  U.UGUID          AS UGUID,
+  U.HASH           AS HASH,
+  U.ALIAS          AS ALIAS,
+  U.ORIGINAL_URL   AS ORIGINAL_URL,
+  U.CUSTOM_DOMAIN  AS CUSTOM_DOMAIN,
+  U.CAMPAIGN_ID    AS CAMPAIGN_ID,
+  U.CREATION_DATE  AS CREATION_DATE,
+  SUM(AGGR.CLICKS) AS CLICKS
+FROM UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                                 AND
+                                                 AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'
+  JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = AGGR.UGUID
+  JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+WHERE
+  lt.ACCOUNT_ID = 2
+  AND U.ACCOUNT_ID = 2
+  AND U.CAMPAIGN_ARCHIVED = 0
+  AND U.LINK_ARCHIVED = 0
+  AND (U.ORIGINAL_URL LIKE '%%')
+  AND t.TAG_NAME = 'nacelle'
+GROUP BY U.UGUID
+ORDER BY CREATION_DATE DESC, ORDER_INSERTED DESC
+LIMIT 0, 20;
+</span>
+</div>
+<br>
+
+<div>
+
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>a</td>
+            <td>const</td>
+            <td>PRIMARY</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index; Using temporary; Using filesort</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>t</td>
+            <td>const</td>
+            <td>PRIMARY,TAG_NAME</td>
+            <td>TAG_NAME</td>
+            <td>767</td>
+            <td>const</td>
+            <td>1</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>lt</td>
+            <td>ref</td>
+            <td>PRIMARY,FK_LINK_TAGS_TO_TAGS,FK_LINK_TAGS_TO_SHORTENED_LINKS</td>
+            <td>PRIMARY</td>
+            <td>12</td>
+            <td>const,const</td>
+            <td>5</td>
+            <td>Using index</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>AGGR</td>
+            <td>ref</td>
+            <td>UX_UGUID_DATE</td>
+            <td>UX_UGUID_DATE</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>3</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>s</td>
+            <td>eq_ref</td>
+            <td>UX_SGUID,IX_CAMPAIGN</td>
+            <td>UX_SGUID</td>
+            <td>36</td>
+            <td>post_master_dev.lt.SGUID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>SIMPLE</td>
+            <td>c</td>
+            <td>eq_ref</td>
+            <td>PRIMARY,FK_CAMPAIGNS_TO_ACCOUNTS</td>
+            <td>PRIMARY</td>
+            <td>4</td>
+            <td>post_master_dev.s.CAMPAIGN_ID</td>
+            <td>1</td>
+            <td>Using where</td>
+        </tr>
+    </table>
+
+
+</div>
+</p>
+
+</body>
+</html>
+
+
+
