@@ -12,7 +12,7 @@ def partOfAllLInksTosetTags = 0.66666666
 
 
 def accountLinksBatchSize = 900
-def completitionsStepSize = 0.005
+def completitionsStepSize = 0.0005
 
 // read working accounts from file
 
@@ -32,7 +32,7 @@ def Sql masterDsReplica = new ProdSQLConnector().createReplica();
 
 try {
 
-    def allTagIds = (masterDsReplica.rows("SELECT TAG_ID from tags WHERE TAG_ID ORDER by TAG_ID"))*.TAG_ID
+    def allTagIds = (masterDsReplica.rows("SELECT TAG_ID from TAGS WHERE TAG_ID ORDER by TAG_ID"))*.TAG_ID
     tagsSize = allTagIds.size();
 
     println "Total tags $tagsSize"
