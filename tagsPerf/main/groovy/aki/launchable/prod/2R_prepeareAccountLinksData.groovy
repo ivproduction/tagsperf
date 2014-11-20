@@ -1,7 +1,6 @@
 package aki.launchable.prod
 
 import aki.utils.ProdSQLConnector
-import aki.utils.SQLConnector
 import groovy.sql.Sql
 
 def Sql masterRepDs = new ProdSQLConnector().createReplica();

@@ -1,0 +1,46 @@
+SELECT SUM(AGGR.CLICKS) AS CLICKS
+FROM ACCOUNT AS AGGR
+WHERE
+  AGGR.ACCOUNT_ID = 79764
+  AND AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11';
+
+
+SELECT SUM(AGGR.CLICKS) AS CLICKS
+FROM
+  UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                              AND
+                                              AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'
+WHERE
+  U.ACCOUNT_ID = 79764
+  AND U.CAMPAIGN_ARCHIVED = 0
+  AND U.LINK_ARCHIVED = 0;
+
+
+SELECT SUM(AGGR.CLICKS) AS CLICKS
+FROM
+  UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                              AND
+                                              AGGR.DATE BETWEEN '2011-10-13' AND '2014-11-11'
+  JOIN post_master.LINK_TAGS AS lt ON lt.SGUID = U.UGUID
+  JOIN post_master.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+WHERE
+  U.ACCOUNT_ID = 79764
+  AND U.CAMPAIGN_ARCHIVED = 0
+  AND U.LINK_ARCHIVED = 0
+  AND t.TAG_NAME = 'naval';
+
+-- add account_id filtering
+
+SELECT SUM(AGGR.CLICKS) AS CLICKS
+FROM
+  UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID
+                                              AND
+                                              AGGR.DATE BETWEEN '2011-10-13' AND '2014-11-11'
+  JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = U.UGUID
+  JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID
+WHERE
+  lt.ACCOUNT_ID = 79764
+  AND U.ACCOUNT_ID = 79764
+  AND U.CAMPAIGN_ARCHIVED = 0
+  AND U.LINK_ARCHIVED = 0
+  AND t.TAG_NAME = 'naval'
