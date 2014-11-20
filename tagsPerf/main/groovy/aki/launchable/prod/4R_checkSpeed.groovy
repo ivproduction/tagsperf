@@ -40,7 +40,7 @@ try {
             String query, index ->
                 def queryR = query.replace("accountId", "" + accountId).replace("qtagName", "" + qtagName)
                 sql.execute(queryR);
-                executedQueries << queryR.replace("\n", "");
+                executedQueries << queryR.replace("\n", " ");
                 executedQueriesNames << PerfQueries.queriesNames[index];
                 println executedQueries.size() + "  ${PerfQueries.queriesNames[index]} " + queryR.replace("\n", "");
         }
@@ -73,7 +73,7 @@ try {
                 csv.append("\r\n");
             }
 
-            csv.append("${queryId},${executedQueriesNames[queryId - 1]},${executedQueries[queryId - 1].replace("\n", "").replace(",", "~")},${duration},${seq},${state},${numb_ops},${sum_dur},${avg_dur},${sum_cpu},${avg_cpu}\r\n");
+            csv.append("${queryId},${executedQueriesNames[queryId - 1]},${executedQueries[queryId - 1].replace("\n", " ").replace(",", "~")},${duration},${seq},${state},${numb_ops},${sum_dur},${avg_dur},${sum_cpu},${avg_cpu}\r\n");
     }
 
 
