@@ -6,8 +6,8 @@ package aki.launchable.prod
 class PerfQueries2 {
 
 //    static def accountId = 1;
-    public static def String devEv = '';
 //    public static def String devEv = '';
+    public static def String devEv = '_dev';
 
     static def linksTable79764 = "SELECT\n" +
             "          U.CREATION_DATE  AS CREATION_DATE,\n" +
@@ -23,8 +23,8 @@ class PerfQueries2 {
             "          SUM(AGGR.CLICKS) AS CLICKS\n" +
             "        FROM\n" +
             "          UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID AND AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'\n" +
-            "          JOIN post_master.LINK_TAGS AS lt ON lt.SGUID = U.UGUID\n" +
-            "          JOIN post_master.TAGS AS t ON t.TAG_ID = lt.TAG_ID\n" +
+            "          JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = U.UGUID\n" +
+            "          JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID\n" +
             "        WHERE lt.ACCOUNT_ID=accountId AND U.CAMPAIGN_ARCHIVED = 0 AND U.LINK_ARCHIVED = 0 AND\n" +
             "              (U.ORIGINAL_URL LIKE '%%') AND t.TAG_NAME = 'qtagName'\n" +
             "        GROUP BY U.UGUID\n" +
@@ -46,8 +46,8 @@ class PerfQueries2 {
             "          SUM(AGGR.CLICKS) AS CLICKS\n" +
             "        FROM\n" +
             "          UGUID AS AGGR RIGHT JOIN VIEW_UGUID AS U ON AGGR.UGUID = U.UGUID AND AGGR.DATE BETWEEN '2014-10-13' AND '2014-11-11'\n" +
-            "          JOIN post_master.LINK_TAGS AS lt ON lt.SGUID = U.UGUID\n" +
-            "          JOIN post_master.TAGS AS t ON t.TAG_ID = lt.TAG_ID\n" +
+            "          JOIN post_master_dev.LINK_TAGS AS lt ON lt.SGUID = U.UGUID\n" +
+            "          JOIN post_master_dev.TAGS AS t ON t.TAG_ID = lt.TAG_ID\n" +
             "        WHERE lt.ACCOUNT_ID=accountId AND U.CAMPAIGN_ARCHIVED = 0 AND U.LINK_ARCHIVED = 0 AND\n" +
             "              (U.ORIGINAL_URL LIKE '%%') AND t.TAG_NAME = 'qtagName'\n" +
             "        GROUP BY U.UGUID\n" +

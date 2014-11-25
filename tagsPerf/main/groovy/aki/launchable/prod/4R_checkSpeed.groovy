@@ -4,7 +4,7 @@ import aki.utils.ProdSQLConnector
 import groovy.sql.Sql
 
 def Sql sql = new ProdSQLConnector().createStats();
-def devEv = PerfQueries2.devEv;
+def devEv = PerfQueries3.devEv;
 
 
 def executedQueries = []
@@ -28,11 +28,11 @@ try {
     csv.createNewFile()
     csv.append("id,name,query,duration,seq,state,numb_ops,sum_dur,avg_dur,sum_cpu,avg_cpu\r\n")
 
-//    def qtagName = sql.firstRow("SELECT  count(*), lt.TAG_ID, t.TAG_NAME FROM post_master" + devEv + ".LINK_TAGS lt JOIN post_master" + devEv + ".TAGS t ON t.TAG_ID=lt.TAG_ID" +
-//            " GROUP BY lt.TAG_ID ORDER BY count(*) DESC LIMIT 1;").TAG_NAME;
+    def qtagName = sql.firstRow("SELECT  count(*), lt.TAG_ID, t.TAG_NAME FROM post_master" + devEv + ".LINK_TAGS lt JOIN post_master" + devEv + ".TAGS t ON t.TAG_ID=lt.TAG_ID" +
+            " GROUP BY lt.TAG_ID ORDER BY count(*) DESC LIMIT 1;").TAG_NAME;
 
-    def qtagName = sql.firstRow("SELECT  count(*), lt.TAG_ID, t.TAG_NAME FROM post_master.LINK_TAGS lt " +
-            "JOIN post_master.TAGS t ON t.TAG_ID=lt.TAG_ID WHERE lt.ACCOUNT_ID=79764 GROUP BY lt.TAG_ID ORDER BY count(*) DESC LIMIT 1;").TAG_NAME
+//    def qtagName = sql.firstRow("SELECT  count(*), lt.TAG_ID, t.TAG_NAME FROM post_master_dev.LINK_TAGS lt " +
+//            "JOIN post_master_dev.TAGS t ON t.TAG_ID=lt.TAG_ID WHERE lt.ACCOUNT_ID=79764 GROUP BY lt.TAG_ID ORDER BY count(*) DESC LIMIT 1;").TAG_NAME
 
 
     sql.execute("set profiling_history_size=1000")
@@ -40,13 +40,13 @@ try {
 
 
     workingAccountLinksMap.each { accountId, accountLinksCount ->
-        PerfQueries2.queries.eachWithIndex {
+        PerfQueries3.queries.eachWithIndex {
             String query, index ->
                 def queryR = query.replace("accountId", "" + accountId).replace("qtagName", "" + qtagName)
                 sql.execute(queryR);
                 executedQueries << queryR.replace("\n", " ");
-                executedQueriesNames << PerfQueries2.queriesNames[index];
-                println executedQueries.size() + "  ${PerfQueries2.queriesNames[index]} " + queryR.replace("\n", "");
+                executedQueriesNames << PerfQueries3.queriesNames[index];
+                println executedQueries.size() + "  ${PerfQueries3.queriesNames[index]} " + queryR.replace("\n", "");
         }
     }
 
@@ -73,7 +73,7 @@ try {
             def sum_cpu = queryPerfRes.sum_cpu
             def avg_cpu = queryPerfRes.avg_cpu
 
-            if ((queryId - 1) % PerfQueries2.queries.size() == 0) {
+            if ((queryId - 1) % PerfQueries3.queries.size() == 0) {
                 csv.append("\r\n");
             }
 
